@@ -1,0 +1,37 @@
+services:
+  talkr-db:
+    container_name: talkr-db
+    image: mongo
+    env_file:
+      - .env
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+      MONGO_INITDB_DATABASE: 'talkr'
+    volumes:
+      - data:/data/db
+    restart: always
+
+  talkr-api:
+    container_name: talkr_api
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '${API_PORT}:${API_PORT}'
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - talkr-db
+
+volumes:
+  data:
+    
+
