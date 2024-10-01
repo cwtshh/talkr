@@ -25,7 +25,7 @@ const Login = () => {
     return (
         <div>
             <NavBar />
-            <div className="flex items-center justify-center mt-20">
+            <div className="flex flex-col items-center justify-center mt-20">
                 <div className=" p-6 rounded-xl w-1/4 shadow-xl">
                     <form onSubmit={handleLogin} className="flex flex-col gap-10">
                         <h1 className="text-3xl font-bold">Login</h1>
@@ -45,6 +45,10 @@ const Login = () => {
                             <button type="submit" className="btn btn-primary">Login</button>
                         </div>
                     </form>
+                </div>
+                <div className="flex flex-col gap-6 mt-6">
+                    <h2 className="font-bold ">Not Registred Yet?</h2>
+                    <button className="btn btn-primary" onClick={() => navigate('/register')}>SignUp</button>
                 </div>
             </div>
         </div>

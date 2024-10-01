@@ -1,18 +1,22 @@
 import NavBar from '../../components/navbar/NavBar'
-import ContactCard from '../../components/ContactCard/ContactCard'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import Chat from '../../components/Chat/Chat'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { IoMdAdd } from 'react-icons/io'
 import ContactList from '../../components/ContactList/ContactList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AddContact from '../../components/AddContact/AddContact'
 
 const ChatWindow = () => {
     const { logout } = useAuth();
     const navigate = useNavigate();
     const [ isAddingContact, setIsAddingContact ] = useState(false);
+    const [ selectedContact, setSelectedContact ] = useState('');
+
+    const handleConversationChange = (id: string) => {
+        setSelectedContact(id);
+    }
 
     const handleLogout = () => {
         logout();
@@ -27,6 +31,10 @@ const ChatWindow = () => {
             setIsAddingContact(true);
         }
     }
+
+    useEffect(() => {
+        console.log(selectedContact);
+    }, [selectedContact]);
     return (
         <div className='overflow-hidden'>
             <NavBar />
@@ -52,12 +60,12 @@ const ChatWindow = () => {
                             </div>
                         </div>
                         <div className='flex flex-col gap-2 mt-2 overflow-y-scroll h-[91%] rounded-xl'>
-                            {isAddingContact ? <ContactList /> : <AddContact />}
+                            {!isAddingContact ? <ContactList onClick={handleConversationChange} /> : <AddContact />}
                         </div>
                     </div>
 
                     <div className='bg-base-200 w-[80%] rounded-2xl'>
-                        <Chat />
+                        <Chat selectedContact={selectedContact} />
                     </div>
                 </div>
             </div>

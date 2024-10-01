@@ -29,10 +29,10 @@ const AddContact = () => {
     }, [])
 
     return (
-        <div>
+        <div className='flex flex-col gap-2'>
             {users.map((user_in, index) => {
                 return (
-                    <AddContactCard key={index} user={user_in} />
+                    <AddContactCard key={index} user_d={user_in} />
                 )
             })}
         </div>

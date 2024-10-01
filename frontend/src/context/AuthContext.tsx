@@ -4,9 +4,14 @@ import { ReactNode } from "react";
 import { API_URL } from "../constants/constants";
 import { NotifyToast } from "../components/Toastify/NotifyToast";
 
+interface UserType {
+    _id: string;
+    name: string;
+    email: string;
+}
 
 interface AuthContextType {
-    user: any;
+    user: UserType | null;
     login: (login_data: LoginData) => Promise<boolean>;
     logout: () => Promise<void>;
 }
@@ -23,14 +28,14 @@ interface LoginData {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState<UserType | null>(null);
     const [ isReady, setReady ] = useState(false);
 
     const login = async(login_data: LoginData) => {
         let success = false;
         await axios.post(`${API_URL}/user/login`, login_data, { withCredentials: true}).then((res) => {
-            localStorage.setItem('user', JSON.stringify(res.data));
-            setUser(res.data);
+            localStorage.setItem('user', JSON.stringify(res.data.user));
+            setUser(res.data.user);
             success = true;
         }).catch((err) => {
             // console.log(err);
